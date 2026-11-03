@@ -1,0 +1,11 @@
+{
+  "name": "ise",
+  "displayName": "Ise",
+  "version": "0.1.0",
+  "description": "A floating Mac panel that shows one block of work at a time, rings when you drift, and picks up what your Claude sessions left unfinished.",
+  "author": { "name": "Olusola Olawale" },
+  "homepage": "https://github.com/solamichealolawale/ise",
+  "repository": "https://github.com/solamichealolawale/ise",
+  "license": "MIT",
+  "keywords": ["focus", "adhd", "planner", "time-blocking", "macos"]
+}

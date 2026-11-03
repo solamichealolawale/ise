@@ -1,0 +1,12 @@
+{
+  "name": "ise",
+  "description": "Ise: a floating focus panel for people who run many Claude sessions",
+  "owner": { "name": "Olusola Olawale" },
+  "plugins": [
+    {
+      "name": "ise",
+      "source": "./",
+      "description": "A floating Mac panel that shows one block of work at a time and picks up what your Claude sessions left unfinished"
+    }
+  ]
+}

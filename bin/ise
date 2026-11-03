@@ -1,0 +1,15 @@
+#!/bin/sh
+# The `ise` command. It runs the installed app's command-line mode; /ise-setup installs the app.
+app="${ISE_APP:-$HOME/Applications/Ise.app}/Contents/MacOS/Ise"
+if [ ! -x "$app" ]; then
+  if [ "$1" = "hook" ]; then
+    cat > /dev/null
+    exit 0
+  fi
+  echo "Ise is not installed yet. Run /ise-setup in Claude Code." >&2
+  exit 1
+fi
+if [ $# -eq 0 ]; then
+  set -- show
+fi
+exec "$app" "$@"
