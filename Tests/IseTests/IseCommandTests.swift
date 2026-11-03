@@ -220,7 +220,9 @@ final class IseCommandTests: XCTestCase {
             .write(to: newPlan, atomically: true, encoding: .utf8)
 
         XCTAssertEqual(CommandLineTool.run(["Ise", "save-plan", newPlan.path]), 0)
-        XCTAssertTrue(FileManager.default.fileExists(atPath: home.appendingPathComponent("plan.unreadable.json").path))
+        let kept = try FileManager.default.contentsOfDirectory(atPath: home.path).filter { $0.hasPrefix("plan.unreadable-") }
+        XCTAssertEqual(kept.count, 1)
+        XCTAssertEqual(try String(contentsOf: home.appendingPathComponent(kept[0]), encoding: .utf8), "{ not json")
         XCTAssertThrowsError(try run("later", "release"))
         XCTAssertEqual(planFile.load()?.blocks[0].status, .done)
     }

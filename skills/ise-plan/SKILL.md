@@ -45,4 +45,4 @@ Rules:
 
 ## 4. Confirm
 
-Run `ise` and reply in two lines: the first block and its first step, and how many blocks are planned. Say `ise undo` puts the old plan back.
+Run `ise` and reply in two lines: the first block and its first step, and how many blocks are planned. For a plan saved for today, say `ise undo` puts the old plan back. For a plan saved for tomorrow, say it starts that morning. If `ise` said the old file could not be read, say where it was kept instead.

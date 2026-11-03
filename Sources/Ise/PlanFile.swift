@@ -63,24 +63,32 @@ final class PlanFile {
 
     /// Replaces today's plan with a new one. The day is started first, so Undo goes back to the day as it began,
     /// including a plan made ahead for it. Any plan made ahead for today is then out of date, so it is dropped.
-    /// Returns true when the old file could not be read: Undo cannot bring that back, so it is kept as plan.unreadable.json.
+    /// When the old file could not be read, Undo cannot bring it back, so it is kept under a dated name, returned here.
     @discardableResult
-    func replaceToday(with plan: Plan, settings: Settings, now: Date = Date()) throws -> Bool {
+    func replaceToday(with plan: Plan, settings: Settings, now: Date = Date()) throws -> URL? {
         try withLock {
-            let isUnreadable = load() == nil && FileManager.default.fileExists(atPath: url.path)
-            if isUnreadable {
-                let keptCopy = url.deletingLastPathComponent().appendingPathComponent("plan.unreadable.json")
-                try? FileManager.default.removeItem(at: keptCopy)
-                try FileManager.default.moveItem(at: url, to: keptCopy)
+            var keptCopy: URL?
+            if load() == nil, FileManager.default.fileExists(atPath: url.path) {
+                let copy = url.deletingLastPathComponent().appendingPathComponent("plan.unreadable-\(Self.stampFormatter.string(from: now)).json")
+                try FileManager.default.moveItem(at: url, to: copy)
+                keptCopy = copy
             }
             _ = try lockedTodaysPlan(settings: settings, now: now)
             try lockedSave(plan)
             if let madeAhead = loadMadeAhead(), madeAhead.date <= plan.date {
                 try? FileManager.default.removeItem(at: tomorrowURL)
             }
-            return isUnreadable
+            return keptCopy
         }
     }
+
+    private static let stampFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.dateFormat = "yyyy-MM-dd-HHmmss"
+        return formatter
+    }()
 
     private func loadMadeAhead() -> Plan? {
         (try? Data(contentsOf: tomorrowURL)).flatMap { try? Self.decoder.decode(Plan.self, from: $0) }

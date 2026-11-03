@@ -1,5 +1,7 @@
 # Ise
 
+![Ise floating at the corner of a Mac screen, with its bubble beside it](docs/images/hero.jpg)
+
 Ise (iṣẹ́, Yoruba for work) is a small panel that floats at a corner of your Mac and shows one block of work at a time.
 It rings when a block has not started or runs past its time, so the day keeps moving.
 It also notices which of your Claude Code sessions stopped with work left, so nothing slips through between sessions.
@@ -7,6 +9,14 @@ It also notices which of your Claude Code sessions stopped with work left, so no
 Built for people with ADHD who run many Claude sessions at once. It works on its own too: you can add and tick tasks in the panel without Claude.
 
 Free and open source (MIT). macOS 14 or later. Windows is planned.
+
+## See it
+
+<p align="center"><img src="docs/images/walkthrough.gif" width="420" alt="A walkthrough: start a block, tick a step, set work aside for Later, switch views, and shrink to the bubble"></p>
+
+| List | Focus timer | Card |
+| --- | --- | --- |
+| ![List view: the block in progress, then Up next, Later, From Claude and Waiting](docs/images/list.png) | ![Focus view: one big countdown ring, the steps, and what comes next](docs/images/focus.png) | ![Card view: the block in progress and the whole day's plan](docs/images/card.png) |
 
 ## Install
 
