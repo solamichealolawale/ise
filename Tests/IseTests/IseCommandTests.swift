@@ -179,6 +179,10 @@ final class IseCommandTests: XCTestCase {
 
         let waitingOnly = Plan(date: plan.date, blocks: [block("Report", .done), block("Merge", .waiting)])
         XCTAssertEqual(Summary.whatIsNext(waitingOnly, at: nine), "Only work waiting on someone is left.")
+
+        var blockedStep = block("Release", .done, steps: ["Ask Sam for keys"])
+        blockedStep.steps[0].status = .blocked
+        XCTAssertEqual(Summary.whatIsNext(Plan(date: plan.date, blocks: [blockedStep]), at: nine), "Only work waiting on someone is left.")
     }
 
     func testReopenRefusesWorkInProgressAndClickingALaterStepBringsItBack() throws {
@@ -216,6 +220,7 @@ final class IseCommandTests: XCTestCase {
             .write(to: newPlan, atomically: true, encoding: .utf8)
 
         XCTAssertEqual(CommandLineTool.run(["Ise", "save-plan", newPlan.path]), 0)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: home.appendingPathComponent("plan.unreadable.json").path))
         XCTAssertThrowsError(try run("later", "release"))
         XCTAssertEqual(planFile.load()?.blocks[0].status, .done)
     }

@@ -42,7 +42,7 @@ struct PanelView: View {
 
     /// Room on the panel's own screen, less the day report when it shows, so the panel never runs off the screen.
     private var tallestContentHeight: Double {
-        max(window.tallestContentHeight - (store.isShowingDayReport ? 220 : 0), 160)
+        max(window.tallestContentHeight - (store.isShowingDayReport ? 260 : 0), 160)
     }
 
     @ViewBuilder

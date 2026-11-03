@@ -115,7 +115,9 @@ enum CommandLineTool {
             try planFile.saveTomorrow(plan)
             return "Saved the plan for \(plan.date). It starts that morning, with anything left unfinished added after it."
         }
-        try planFile.replaceToday(with: plan, settings: settings)
+        if try planFile.replaceToday(with: plan, settings: settings) {
+            return "Saved today's plan with \(plan.blocks.count) blocks. The old file could not be read, so it was kept as plan.unreadable.json."
+        }
         return "Saved today's plan with \(plan.blocks.count) blocks. Run `ise undo` to go back."
     }
 

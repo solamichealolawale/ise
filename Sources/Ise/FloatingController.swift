@@ -254,12 +254,12 @@ final class FloatingController: NSObject, ObservableObject {
         isPinning = false
     }
 
-    /// The screen the user last dropped a window on, else the menu-bar screen; a window's own screen can be wrong mid-resize.
     /// The most the panel's scrolling content may take on the screen it is on, leaving room for its header, grip and footer.
     var tallestContentHeight: Double {
         Double((visibleScreenFrame?.height ?? 800) - 160)
     }
 
+    /// The screen the user last dropped a window on, else the menu-bar screen; a window's own screen can be wrong mid-resize.
     private var visibleScreenFrame: NSRect? {
         (screen ?? NSScreen.screens.first)?.visibleFrame
     }

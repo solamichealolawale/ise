@@ -2,7 +2,7 @@
 name: ise-setup
 description: Install or update the Ise panel app on this Mac and choose its settings. Use for /ise-setup, after installing or updating the Ise plugin, or when `ise` says it is not installed.
 disable-model-invocation: true
-allowed-tools: Bash(uname *) Bash(xcrun *) Bash(swift --version) Bash(ISE_BUILD_DIR=* *) Bash(ise *)
+allowed-tools: Bash(uname -s) Bash(xcrun --find swift) Bash(ise *)
 ---
 
 # Set up Ise
@@ -16,7 +16,7 @@ Keep every message short. Ask with buttons (AskUserQuestion), with the recommend
 
 ## 2. Build and install the app
 
-Run this. It builds from the plugin's source, which takes one to three minutes the first time:
+Run this. Claude Code asks the user to approve it, since it builds and installs an app. It builds from the plugin's source, which takes one to three minutes the first time:
 
 ```bash
 ISE_BUILD_DIR="${CLAUDE_PLUGIN_DATA}/build" "${CLAUDE_PLUGIN_ROOT}/install.sh"

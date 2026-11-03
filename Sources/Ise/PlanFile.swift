@@ -63,14 +63,22 @@ final class PlanFile {
 
     /// Replaces today's plan with a new one. The day is started first, so Undo goes back to the day as it began,
     /// including a plan made ahead for it. Any plan made ahead for today is then out of date, so it is dropped.
-    func replaceToday(with plan: Plan, settings: Settings, now: Date = Date()) throws {
+    /// Returns true when the old file could not be read: Undo cannot bring that back, so it is kept as plan.unreadable.json.
+    @discardableResult
+    func replaceToday(with plan: Plan, settings: Settings, now: Date = Date()) throws -> Bool {
         try withLock {
-            // An unreadable plan file cannot start a day; the new plan simply replaces it.
-            _ = try? lockedTodaysPlan(settings: settings, now: now)
+            let isUnreadable = load() == nil && FileManager.default.fileExists(atPath: url.path)
+            if isUnreadable {
+                let keptCopy = url.deletingLastPathComponent().appendingPathComponent("plan.unreadable.json")
+                try? FileManager.default.removeItem(at: keptCopy)
+                try FileManager.default.moveItem(at: url, to: keptCopy)
+            }
+            _ = try lockedTodaysPlan(settings: settings, now: now)
             try lockedSave(plan)
             if let madeAhead = loadMadeAhead(), madeAhead.date <= plan.date {
                 try? FileManager.default.removeItem(at: tomorrowURL)
             }
+            return isUnreadable
         }
     }
 
